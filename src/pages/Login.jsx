@@ -1,0 +1,66 @@
+import { useState } from "react";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import "../styles/Login.css"; // Import the CSS file
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(""); // State for success message
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess(""); // Reset messages
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setSuccess("Login Successful! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "https://youtube-clone-wmjm.vercel.app/"; // Redirect after showing success
+      }, 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-box">
+        <h1 className="youtube-title">YouTube Clone</h1>
+        <h2 className="login-title">Login to Your Account</h2>
+        
+        <form onSubmit={handleLogin} className="login-form">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="login-input"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="login-input"
+          />
+          <button type="submit" className="login-button">Login</button>
+        </form>
+
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+
+        <p className="signup-link">
+          Don't have an account? <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
