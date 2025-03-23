@@ -35,7 +35,7 @@ const Login = () => {
       await signInWithPopup(auth, googleProvider);
       setSuccess("Google Login Successful! Redirecting...");
       setTimeout(() => {
-        window.location.href = "https://youtube-clone-react-pink.vercel.app/"; // Redirect after success
+        window.location.href = "https://ytclone-numberzz-react.vercel.app/"; // Redirect after success
       }, 2000);
     } catch (err) {
       setError(err.message);
